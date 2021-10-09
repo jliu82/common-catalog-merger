@@ -1,6 +1,6 @@
 import multer from "multer";
 import {get, set, find, assign, forEach} from "lodash"
-import {parseCsvContent, writeCsvToOutputFolder, OUTPUT_FILE_PATH} from "../../features/category-merger/services/csv-processor"
+import {parseCsvContent, writeCsvToOutputFolder, OUTPUT_FILE_PATH} from "../../features/catalog-merger/services/csv-processor"
 
 const upload = multer();
 

@@ -1,6 +1,6 @@
-import { flagProductsForMerge, processFiles, generateMergedProducts } from "./category-merger";
+import { flagProductsForMerge, processFiles, generateMergedProducts } from "./catalog-merger";
 
-describe("category merger", () => {
+describe("catalog merger", () => {
   const companies = {
     a: {
       barcodes: [

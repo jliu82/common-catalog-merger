@@ -23,7 +23,7 @@ function FileUploader({}) {
     //   },
     };
 
-    const response = await axios.post('/api/category-merger', formData, config);
+    const response = await axios.post('/api/catalog-merger', formData, config);
     setOutputFilePath(response.data.csv)
   };
 

@@ -1,5 +1,5 @@
 function useMergeResult(id) {
-  const { data, error } = useSWR(`/api/category-merger`, fetcher);
+  const { data, error } = useSWR(`/api/common-catalog-merger`, fetcher);
 
   return {
     resultCsv: data,
