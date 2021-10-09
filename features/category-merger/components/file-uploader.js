@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "../../../styles/Home.module.css";
+import axios from "axios"
 
 function FileUploader({}) {
   const [filesSelelected, setFilesSelected] = useState([]);
@@ -8,17 +9,20 @@ function FileUploader({}) {
       setFilesSelected(event.target.files)
   };
 
-  const uploadFiles = async()=>{
+  const uploadFiles = async () => {
     const formData = new FormData();
-    formData.append("files", filesSelelected);
-    await fetch('/api/category-merger', {
-        method: 'POST',
-        headers: {
-        'Content-Type': 'multipart/form-data;'
-        },
-        body: formData
-    })
-  }
+    Object.entries(filesSelelected).forEach((file)=>{
+        formData.append("files", file[1]);
+    });
+    const config = {
+      headers: { 'content-type': 'multipart/form-data' },
+    //   onUploadProgress: (event) => {
+    //     console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
+    //   },
+    };
+
+    const response = await axios.post('/api/category-merger', formData, config);
+  };
 
   return (
     <div>
@@ -28,6 +32,7 @@ function FileUploader({}) {
           webkitdirectory=""
           type="file"
           onChange={onFileInputChange}
+          multiple
         />
       </code>
         <ul>

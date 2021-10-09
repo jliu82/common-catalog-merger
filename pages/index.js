@@ -1,7 +1,6 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import FileUploader from "../pages/category-merger/components/file-uploader"
+import FileUploader from "../features/category-merger/components/file-uploader"
 
 export default function Home() {
   return (
