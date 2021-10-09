@@ -59,6 +59,7 @@ export const flagProductsForMerge = (companies)=>{
     }, {})
 }
 
+//Merge 2 catories together, we can just collect unique items from A, and merge in items from B which can't not be find by barcode matching
 export const generateMergedProducts = (companies)=>{
     //collect all the catelog items from a first
     const allProducts = get(companies, "a.catalog").map(catelog => 

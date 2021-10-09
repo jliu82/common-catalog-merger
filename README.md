@@ -1,16 +1,15 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Common category merger
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app)
+to solve [this](https://github.com/tosumitagrawal/codingskills) problem.
 
-## Getting Started
-
-First, check out the projec and install dependencies
+## Installation
 ```bash
 npm install
 # or
 yarn install
 ```
 
-
-run the development server:
+## run the development server:
 
 ```bash
 npm run dev
@@ -18,4 +17,10 @@ npm run dev
 yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## or runing the production server:
+```bash
+yarn build
+yarn start
+```
+
+Open [http://localhost:3100](http://localhost:3100) with your browser to see the result.
