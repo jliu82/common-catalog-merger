@@ -1,10 +1,11 @@
 import { useState } from "react";
 import styles from "../../../styles/Home.module.css";
 import axios from "axios"
+import { CSVLink } from "react-csv";
 
 function FileUploader({}) {
   const [filesSelelected, setFilesSelected] = useState([]);
-  const [outputFilePath, setOutputFilePath] = useState();
+  const [resultData, setResultData] = useState();
 
 
   const onFileInputChange = (event) => {
@@ -24,7 +25,7 @@ function FileUploader({}) {
     };
 
     const response = await axios.post('/api/catalog-merger', formData, config);
-    setOutputFilePath(response.data.csv)
+    setResultData(response.data.csv)
   };
 
   return (
@@ -45,7 +46,10 @@ function FileUploader({}) {
         </ul>
         {filesSelelected.length > 0 ? <button className={styles.actionBtn} onClick={uploadFiles}>Merge</button> : null}
         
-        {outputFilePath ?  <p className={styles.description}>Result csv geneated in {outputFilePath}</p> : null}
+        {resultData ?  <p className={styles.description}>Result csv geneated in OUTPUT folder.
+                         <CSVLink className={styles.link} data={resultData}>Download</CSVLink>
+                       </p>
+                    : null}
     </div>
   );
 }

@@ -1,6 +1,6 @@
 import multer from "multer";
 import {get, set, find, assign, forEach} from "lodash"
-import {parseCsvContent, writeCsvToOutputFolder, OUTPUT_FILE_PATH} from "../../features/catalog-merger/services/csv-processor"
+import {parseCsvContent, writeCsvToOutputFolder} from "../../features/catalog-merger/services/csv-processor"
 
 const upload = multer();
 
@@ -10,7 +10,7 @@ export const config = {
   },
 };
 
-export default async function handler(req, res) {
+export default function handler(req, res) {
   if (req.method === "POST") {
   
     upload.array("files", 6)(req, {}, (err) => {
@@ -18,10 +18,10 @@ export default async function handler(req, res) {
         res.status(400).json({ error: err });
       }
       const mergedProducts = generateMergedProducts(processFiles(req.files));
-     
+      
       return new Promise((resolve) => {
         writeCsvToOutputFolder(mergedProducts).then(response => {
-            res.status(200).send({csv: OUTPUT_FILE_PATH})
+            res.status(200).send({csv: mergedProducts})
             resolve();
         }).catch(error => {
             res.json(error);
@@ -59,7 +59,7 @@ export const flagProductsForMerge = (companies)=>{
     }, {})
 }
 
-//Merge 2 catories together, we can just collect unique items from A, and merge in items from B which can't not be find by barcode matching
+//Merge 2 catalogs together, we can just collect unique items from A, and merge in items from B which can't not be found by barcode matching
 export const generateMergedProducts = (companies)=>{
     //collect all the catelog items from a first
     const allProducts = get(companies, "a.catalog").map(catelog => 
