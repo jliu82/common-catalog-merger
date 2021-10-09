@@ -100,5 +100,8 @@ describe("category merger", () => {
     expect(products[0]["sku"]).toEqual("647-vyk-317");
     expect(products[0]["description"]).toEqual("Walkers Special Old Whiskey");
     expect(products[0]["source"]).toEqual("a");
+    expect(products[1]["sku"]).toEqual("647-vyk-317");
+    expect(products[1]["description"]).toEqual("Another Walkers Special Old Whiskey");
+    expect(products[1]["source"]).toEqual("b");
   });
 });

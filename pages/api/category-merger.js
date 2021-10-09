@@ -1,5 +1,6 @@
 import multer from "multer";
 import {get, set, find, assign, forEach} from "lodash"
+import {parseCsvContent, writeCsvToOutputFolder, OUTPUT_FILE_PATH} from "../../features/category-merger/services/csv-processor"
 
 const upload = multer();
 
@@ -9,15 +10,26 @@ export const config = {
   },
 };
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (req.method === "POST") {
+  
     upload.array("files", 6)(req, {}, (err) => {
       if (err) {
         res.status(400).json({ error: err });
       }
-      generateMergedProducts(processFiles(req.files));
+      const mergedProducts = generateMergedProducts(processFiles(req.files));
+     
+      return new Promise((resolve) => {
+        writeCsvToOutputFolder(mergedProducts).then(response => {
+            res.status(200).send({csv: OUTPUT_FILE_PATH})
+            resolve();
+        }).catch(error => {
+            res.json(error);
+            res.status(405).end();
+            return resolve();
+        });  
+      });
     });
-    res.status(200).send({});
   } else {
     res.status(200).json({ status: "it is running" });
   }
@@ -32,27 +44,6 @@ export const processFiles = (files) => {
         parseCsvContent(file.buffer.toString()))
   });
   return companies;
-};
-
-export const parseCsvContent = (data) => {
-  // Split into header and rows
-  const [headerRow, ...rows] = data.split("\n");
-  // Split header/rows with comma seperator into array of values
-  const parseRow = (row) => row.replace("\r", "").split(",");
-  const headers = parseRow(headerRow);
-
-  // Create categories from rows
-  return rows.map((row) =>
-    parseRow(row)
-      // Reduce values array into an object like: { [header]: value }
-      .reduce(
-        (object, value, index) => ({
-          ...object,
-          [headers[index].toLowerCase()]: value.trim(),
-        }),
-        {}
-      )
-  );
 };
 
 export const flagProductsForMerge = (companies)=>{
@@ -85,7 +76,7 @@ export const generateMergedProducts = (companies)=>{
 }
 
 const findDescriptionBySku = (company, sku) =>{
-    return find(get(company, "catalog"),(catelog) => 
+    return get(find(get(company, "catalog"),(catelog) => 
         catelog.sku === sku
-    )
+    ), "description")
 }

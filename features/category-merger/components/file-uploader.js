@@ -4,6 +4,8 @@ import axios from "axios"
 
 function FileUploader({}) {
   const [filesSelelected, setFilesSelected] = useState([]);
+  const [outputFilePath, setOutputFilePath] = useState();
+
 
   const onFileInputChange = (event) => {
       setFilesSelected(event.target.files)
@@ -22,6 +24,7 @@ function FileUploader({}) {
     };
 
     const response = await axios.post('/api/category-merger', formData, config);
+    setOutputFilePath(response.data.csv)
   };
 
   return (
@@ -40,7 +43,9 @@ function FileUploader({}) {
             <li key={file[1].name}>{file[1].name}</li>
           ))}
         </ul>
-        {filesSelelected.length > 0 ? <button onClick={uploadFiles}>Merge</button> : null}
+        {filesSelelected.length > 0 ? <button className={styles.actionBtn} onClick={uploadFiles}>Merge</button> : null}
+        
+        {outputFilePath ?  <p className={styles.description}>Result csv geneated in {outputFilePath}</p> : null}
     </div>
   );
 }
