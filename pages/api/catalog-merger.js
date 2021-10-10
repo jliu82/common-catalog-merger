@@ -18,17 +18,10 @@ export default function handler(req, res) {
         res.status(400).json({ error: err });
       }
       const mergedProducts = generateMergedProducts(processFiles(req.files));
-      
-      return new Promise((resolve) => {
-        writeCsvToOutputFolder(mergedProducts).then(response => {
-            res.status(200).send({csv: mergedProducts})
-            resolve();
-        }).catch(error => {
-            res.json(error);
-            res.status(405).end();
-            return resolve();
-        });  
-      });
+      res.status(200).send({csv: mergedProducts})
+      //won't be able to write to OUTPUT folder per requirement if deployed on server, 
+      //write csv after the 200 resonse so it can be used in both senarios.
+      writeCsvToOutputFolder(mergedProducts)
     });
   } else {
     res.status(200).json({ status: "it is running" });
@@ -61,7 +54,7 @@ export const flagProductsForMerge = (companies)=>{
 
 //Merge 2 catalogs together, we can just collect unique items from A, and merge in items from B which can't not be found by barcode matching
 export const generateMergedProducts = (companies)=>{
-    //collect all the catelog items from a first
+    //collect all the catalog items from A first
     const allProducts = get(companies, "a.catalog").map(catelog => 
         {return assign(catelog, {"source" : "a"})}
     )

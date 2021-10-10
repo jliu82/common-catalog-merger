@@ -23,9 +23,14 @@ function FileUploader({}) {
     //     console.log(`Current progress:`, Math.round((event.loaded * 100) / event.total));
     //   },
     };
-
-    const response = await axios.post('/api/catalog-merger', formData, config);
-    setResultData(response.data.csv)
+    try {
+        const response = await axios.post('/api/catalog-merger', formData, config);
+        setResultData(response.data.csv)
+    } catch (err) {
+        alert(err);
+        console.error(err);
+    }
+    
   };
 
   return (
@@ -47,7 +52,7 @@ function FileUploader({}) {
         {filesSelelected.length > 0 ? <button className={styles.actionBtn} onClick={uploadFiles}>Merge</button> : null}
         
         {resultData ?  <p className={styles.description}>Result csv geneated in OUTPUT folder.
-                         <CSVLink className={styles.link} data={resultData}>Download</CSVLink>
+                         <CSVLink className={styles.link} filename={"result_output.csv"} data={resultData}>Download</CSVLink>
                        </p>
                     : null}
     </div>
