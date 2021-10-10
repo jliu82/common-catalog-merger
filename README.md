@@ -26,5 +26,5 @@ yarn start
 Open [http://localhost:3100](http://localhost:3100) with your browser to see the result.
 
 ## Live version
-A live demo can be found [here](https://common-catalog-merger-lbkmyp8cb-jliu82.vercel.app)
+A live demo can be found [here](https://common-catalog-merger.vercel.app)
 NOTE: live version won't write to output folder per requirement.
